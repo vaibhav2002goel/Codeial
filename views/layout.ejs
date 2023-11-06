@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>
+            <%= title %>
+        </title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+
+        <!-- This jquery cdn is used so that we use jquery to handle ajax request in creating posts in the home_posts.js -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> 
+        
+        <link rel="stylesheet" href="<%= assetPath('layout.css') %>">
+
+        <!-- Header and footer css files are placed seperately over here because if we include them in there ejs file then they are coming inside the body tag -->
+        <link rel="stylesheet" href="<%= assetPath('header.css') %>">
+        <link rel="stylesheet" href="<%= assetPath('footer.css') %>">
+        <link rel="stylesheet" href="<%= assetPath('chat_box.css') %>">
+        <%- style %>
+    </head>
+
+    <body>
+
+        <%- include('_header'); %>
+
+        
+        <%- body %>
+        
+        <%- include('_footer'); %>
+        
+
+        <%- script %>
+
+        <script>
+            <%if(flash.success && flash.success.length > 0){%>    
+                new Noty({
+                    theme: 'relax',
+                    text: "<%= flash.success %>",
+                    type: 'success',
+                    layout: 'topRight',
+                    timeout: 1500
+                }).show()         
+            <%}%>
+
+            <%if(flash.error && flash.error.length > 0){%>    
+                new Noty({
+                    theme: 'relax',
+                    text: "<%= flash.error %>",
+                    type: 'error',
+                    layout: 'topRight',
+                    timeout: 1500
+                }).show()         
+            <%}%>
+
+        </script>
+    </body>
+</html>

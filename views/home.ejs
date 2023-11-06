@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="<%= assetPath('home.css') %>">
+
+<!-- <h1>This is Codeial</h1> -->
+        
+<div id="home-container">
+
+    <section id="feed-posts">
+        <h4>Posts</h4>
+    
+        <% if(locals.user) {%>
+        <form action="/posts/create" id="new-post-form" method="post">
+            <textarea name="content" id="" cols="30" rows="3" placeholder="Add Content.." required></textarea>
+            <input type="submit" value="post">
+        </form>
+        <%}%>
+    
+        <div id="posts-list-container">
+            <ul>
+                <% for(post of posts) { %>
+                    <%- include('_post') -%>
+                <%}%>
+            </ul>
+        </div>
+    </section>
+    
+    <section id="user-friends">
+        <h4>Friends</h4>
+    
+        <% if(locals.user) {%>
+    
+        <% for(u of all_users){ %>
+                <%if(u.name != locals.user.name){%>
+                    <p>
+                        <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
+                    </p>
+                <%}%>
+            <%}%>
+    
+        <%}else{%>
+            <% for(u of all_users){ %>
+                    <p>
+                        <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
+                    </p>
+            <%}%>
+        <%}%>
+    </section>
+
+    <%- include('chat_box') -%>
+</div>
+
+
+<script src="<%= assetPath('js/home_comments.js') %>" ></script>
+<script src="<%= assetPath('js/home_posts.js') %>" ></script>
+
+<script src="<%= assetPath('js/toggle_likes.js') %>"></script>
+<script>
+    $('.toggle-like-button').each(function(){
+        let self = this;
+        let toggleLike = new ToggleLike(self)
+    })
+</script>
+
+<!-- CDN For sockey.io libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" ></script> 
+<script src="<%= assetPath('js/chat_engine.js') %>" ></script>
+<% if(locals.user){ %>
+<script>
+    new ChatEngine('user-chat-box','<%= locals.user.email %>')
+</script>
+<% } %>

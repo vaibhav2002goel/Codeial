@@ -1,0 +1,45 @@
+<li id="post-<%= post._id %>">
+    <p>
+        <!-- Here we are making sure that user is logged in and the user who is loggged in can see the delete button on his own posts only.   -->
+        <!-- locals.user,id==post.user.id ensures that no other website user can delete the posts -->
+        <% if(locals.user && locals.user.id == post.user.id){%> 
+            <a class="delete-post-button"  href="/posts/destroy/<%= post.id %>">Delete</a>
+        <%}%>
+        <%= post.content %>
+        <%= post.user.name %>
+        <br>
+
+        <% if(locals.user) {%>
+            <a class="toggle-like-button" data-likes="<%= post.likes.length %>" href="/likes/toggle/?id=<%= post._id %>&type=Post">
+                <%= post.likes.length %> Likes
+            </a>
+        <%}else{%>
+            <%= post.likes.length %> Likes
+        <%}%>
+
+        
+    </p>
+
+    <div class="post-comments">
+        <% if(locals.user){ %>
+            <form id="post-<%= post._id %>-comments-form" action="/comments/create" method="post">
+                <input type="text" name="comment" placeholder="Type your comments here.." required>
+                <input type="hidden" name="post" value="<%= post._id %>">
+                <input type="submit" value="Add Comment">
+            </form>
+        <%}%>
+
+            <div class="post-comments-list">
+                <ul id="post-comments-<%= post.id %>">
+                    <% for(comment of post.comments){ %>
+
+                        <%- include('_comment') -%>
+
+                    <%}%>
+                </ul>
+            </div>
+
+    </div>
+</li>
+
+

@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="<%= assetPath('user_profile.css') %>">
+
+<h1>
+    Codeial /Profile Page / <%= title %>
+</h1>
+
+<!-- We need to add a path for this in our entry file -->
+<img src="<%= user.avatar %>" alt="<%= user.name %>" width="100" height="100"> 
+
+
+
+
+<!-- If user matches then only show the form -->
+<% if(user.id == profile_user.id) { %>
+
+    <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post">
+        <span style="color: white;"> Name : </span><input type="text" name="name" placeholder="Your name" value="<%= user.name %>" required><br>
+        <span style="color: white;"> Email : </span><input type="email" name="email" placeholder="Your Email" value="<%= user.email %>" required><br><br>
+        
+        <input id="inputImage" type="file" name="avatar" placeholder="Profile Picture" accept="image/*"><br>
+        <img id="previewImage" alt="">
+        <p id="errorMsg"></p>
+        
+        <input type="submit" value="Update">
+
+        <p><%= profile_user.name %></p>
+        <p><%= profile_user.email  %></p>
+    </form>
+
+    <a href="">Add as Friend</a>
+
+<%}else{%>
+    <p><%= profile_user.name %></p>
+    <p><%= profile_user.email  %></p>
+
+<%}%>
+
+<script>
+    function previewImage(event) 
+    {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const element = document.getElementById('previewImage');
+            element.src = reader.result;
+        }
+        reader.onerror = function() {
+            const element = document.getElementById('errorMsg');
+            element.value = "Couldn't load the image.";
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const input = document.getElementById('inputImage');
+    input.addEventListener('change', (event) => {
+        previewImage(event)
+    });
+
+
+</script>
+        
